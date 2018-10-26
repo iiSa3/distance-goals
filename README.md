@@ -1,6 +1,6 @@
 # Distance Goals
 
-## Contributors
+__Contributors__
 - Sam Griffin
 - Euan McGrevey
 - Andrew Craig
