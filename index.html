@@ -8,9 +8,19 @@
 </head>
 <body>
 	<h1>Distance Goals</h1>
-	<div id="map"></div>
+	<div id="map" style="height: 500px; width: 500px;"></div>
+	<input type="file" id="gpxfile">
+	<input type="submit" id="gpxconfirm">
+
+	<ul class="supplied-gpx-container" id="gpxlist"></ul>
+
+
+
+
+
 	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
 	<script src="https://unpkg.com/leaflet@1.3.4/dist/leaflet.js"></script>
-	<script src="js/main.js"></script>
+	<script src="js/distancegoals.js"></script>
+	<script src="js/suppliedgpx.js"></script>
 </body>
 </html>

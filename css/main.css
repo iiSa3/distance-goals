@@ -1,3 +1,29 @@
 * {
 	border-style: border-box;
 }
+.clearfix::after {
+    content: "";
+    clear: both;
+    display: table;
+}
+
+.supplied-gpx-container {
+	list-style: none;
+	margin: 10px 0 0 0;
+	padding: 0;
+}
+.supplied-gpx {
+	padding: 10px;
+	border-top: 1px solid grey;
+}
+.supplied-gpx-stats {
+	list-style: none;
+}
+.supplied-gpx-stats li {
+	float: left;
+	border-left: 1px solid grey;
+	padding: 10px;
+}
+.supplied-gpx-stats li:last-child {
+	border-right: 1px solid grey;
+}
