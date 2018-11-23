@@ -6,7 +6,12 @@ class DistanceGoals {
 			selectors: {
 				fileselector: "#gpxfile",
 				fileconfirm: "#gpxconfirm",
-				gpxcontainer: "#gpxlist"
+				gpxcontainer: "#gpxlist",
+				agg: {
+					distance: '#aggdist',
+					elevation: '#aggele',
+					time: '#aggtime'
+				}
 			}
 		};
 
@@ -14,7 +19,7 @@ class DistanceGoals {
 		this.uploadedGPXFiles = [];
 		this.distance = 0;
 		this.elevation = 0;
-		this.avgSpeed = 0;
+		this.time = 0;
 
 		this.initialised = false;
 		this.finished = false;
@@ -37,23 +42,53 @@ class DistanceGoals {
 		L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
 			attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
 		}).addTo(this.map);
+
+		var boundsLayer = L.geoJson(JSON.parse(this.geojson));
+
+		this.map.fitBounds(boundsLayer.getBounds());
 	}
 
 	addToDistance(amount) {
 		this.distance += amount;
+
+		jQuery(this.settings.selectors.agg.distance).text(Math.round((this.distance*100)) / 100);
 	}
 
 	addToElevation(amount) {
 		this.elevation += amount;
+
+		jQuery(this.settings.selectors.agg.elevation).text(Math.round((this.elevation*100)) / 100);
 	}
 
-	recalculateSpeed() {
-		var total = 0;
-		this.uploadedGPXFiles.forEach(function(ele) {
-			total += ele.avgSpeed;
-		});
+	addToTime(amount) {
+		this.time += amount;
 
-		this.avgSpeed = total / this.uploadedGPXFiles.length;
+
+		var str = this.formatTime(this.time);
+		jQuery(this.settings.selectors.agg.time).text(str);
+	}
+
+	formatTime(time) {
+		var seconds = time % 60;
+		var mins = Math.floor(time / 60);
+		var hours = Math.floor(mins / 60);
+		var days = 0;
+		var str = mins + " mins " + seconds + " seconds";
+
+		if(hours > 0) {
+			mins = mins % 60;
+
+			days = Math.floor(hours / 24);
+
+			str = hours + " hours " + mins + " mins ";
+			if(days > 0) {
+				hours = hours % 24;
+
+				str = days + " days " + hours + " hours";
+			}
+		}
+
+		return str;
 	}
 
 	//Based on http://stackoverflow.com/a/27943
@@ -142,9 +177,15 @@ class DistanceGoals {
 			    that.map.fitBounds(routeLayer.getBounds());
 		    });
 
-		    var currentMarker = L.marker([this.currentLatLng[1], this.currentLatLng[0]]).bindPopup(sgpx.name).addTo(this.map);
+		    var currentMarker = L.marker([this.currentLatLng[1], this.currentLatLng[0]]).bindPopup(sgpx.name + "<br>" + Math.round(sgpx.distance*100)/100 + "km").addTo(this.map);
 		    this.getLocation(this.currentLatLng);
 		    this.finished = (data.coordinates.length == fullLength)
+		    if(data.coordinates.length == fullLength) {
+		    	this.finished = true;
+				jQuery('#locname')
+					.html('You have finished!');
+
+		    }
 		}
 
 	    if(!this.initialised){
@@ -164,9 +205,10 @@ class DistanceGoals {
 
 	displayProgressLocation(address)
 	{
-		console.log(address.display_name);
-		jQuery('#address-display')
-			.html('You have reached '+address.display_name+'!');
+		if(!this.finished) {
+			jQuery('#locname')
+				.html('You have reached '+address.display_name.replace(', United Kingdom', '').replace(', England', '')+'!');
+		}
 	}
 }
 

@@ -1,12 +1,12 @@
 class SuppliedGPX {
 
 	constructor(fileuploadselector, displaycontainer = null) {
-		this.readFile(fileuploadselector, displaycontainer);
-
 		this.distance = 0;
 		this.elevation = 0;
-		this.avgSpeed = 0;
+		this.time = 0;
 		this.name = "";
+
+		this.readFile(fileuploadselector, displaycontainer);
 	}
 
 	readFile(selector, displaycontainer = null) {
@@ -21,16 +21,18 @@ class SuppliedGPX {
 
 		reader.onload = function(e) {
 			var contents = e.target.result;
-			sgpx.parseGPX(contents);
+			var res = sgpx.parseGPX(contents);
 
-			dg.addToDistance(sgpx.distance);
-			dg.addToElevation(sgpx.elevation);
-			dg.recalculateSpeed();
+			if(res) {
+				dg.addToDistance(sgpx.distance);
+				dg.addToElevation(sgpx.elevation);
+				dg.addToTime(sgpx.time);
 
-			dg.displayGoalMap(sgpx);
+				dg.displayGoalMap(sgpx);
 
-			if(displaycontainer)
-				sgpx.display(displaycontainer);
+				if(displaycontainer)
+					sgpx.display(displaycontainer);
+			}
 		};
 
 		reader.readAsText(file);
@@ -42,12 +44,22 @@ class SuppliedGPX {
 
 		var totalDistance = 0;
 		var totalElevation = 0;
-		if(parser.tracks != null) {
+		if(parser.tracks != null && parser.tracks.length > 0) {
 			for (var i = parser.tracks.length - 1; i >= 0; i--) {
-				totalDistance += Math.round((parser.tracks[i].distance.total/1000) * 100) / 100;
-				totalElevation += Math.round(parser.tracks[i].elevation.pos * 100) / 100;
+				totalDistance += (parser.tracks[i].distance.total/1000);
+				totalElevation += parser.tracks[i].elevation.pos;
 			}
+		} else {
+			alert("Unable to find any tracks in this file. Are you sure it is a GPX file?");
+			return false;
 		}
+
+		var times = parser.xmlSource.getElementsByTagName('time');
+
+		var start = Date.parse(times[0].innerHTML);
+		var end = Date.parse(times[times.length - 1].innerHTML);
+
+		var diff = (end-start) / 1000; // Time difference in seconds
 
 		if(parser.metadata.name != null)
 			this.name = parser.metadata.name;
@@ -56,7 +68,7 @@ class SuppliedGPX {
 
 		this.distance = totalDistance;
 		this.elevation = totalElevation;
-		this.avgSpeed = 0;
+		this.time = diff;
 		return true;
 	}
 
@@ -64,9 +76,9 @@ class SuppliedGPX {
 		var html = "<li class='supplied-gpx'> \
 			<h2>" + this.name + "</h2> \
 			<ul class='supplied-gpx-stats clearfix'> \
-				<li><strong>Distance:</strong> " + this.distance + " kilometers</li> \
-				<li><strong>Elevation:</strong> " + this.elevation + " metres</li> \
-				<li><strong>Average Speed:</strong> " + this.avgSpeed + "mph</li> \
+				<li><strong>Distance:</strong> " + Math.round((this.distance*100)) / 100 + " kilometers</li> \
+				<li><strong>Elevation:</strong> " + Math.round(this.elevation*100)/100 + " metres</li> \
+				<li><strong>Time:</strong> " + dg.formatTime(this.time) + "</li> \
 			</ul> \
 		</li>";
 

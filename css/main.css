@@ -1,5 +1,9 @@
 * {
-	border-style: border-box;
+	box-sizing: border-box;
+}
+body {
+	margin: 0;
+	padding: 20px;
 }
 .clearfix::after {
     content: "";
@@ -7,10 +11,22 @@
     display: table;
 }
 
+#map {
+	float: left;
+}
 .supplied-gpx-container {
 	list-style: none;
-	margin: 10px 0 0 0;
-	padding: 0;
+	margin: 0 0 0 20px;
+	float: left;
+	height: 430px;
+	width: calc(50% - 20px);
+	overflow: scroll;
+	background-color: #cccccc;
+}
+.supplied-gpx-container--small {
+	margin-top: 20px;
+	margin-bottom: 20px;
+	height: 150px;
 }
 .supplied-gpx {
 	padding: 10px;
@@ -26,4 +42,13 @@
 }
 .supplied-gpx-stats li:last-child {
 	border-right: 1px solid grey;
+}
+
+.gpxinput {
+	margin-bottom: 20px;
+}
+
+.locname {
+	font-weight: bold;
+	margin-left: 50px;
 }
