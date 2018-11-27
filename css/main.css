@@ -3,7 +3,8 @@
 }
 body {
 	margin: 0;
-	padding: 20px;
+	padding-left: 40px;
+	padding-right: 40px;
 }
 .clearfix::after {
     content: "";
@@ -12,33 +13,37 @@ body {
 }
 
 #map {
-	float: left;
+	width: 100%;
+	height: 700px;
 }
 .supplied-gpx-container {
 	list-style: none;
-	margin: 0 0 0 20px;
-	float: left;
-	height: 430px;
-	width: calc(50% - 20px);
+	width: 100%;
+	margin-top: 25px;
+	height: 620px;
 	overflow: scroll;
-	background-color: #cccccc;
+	background-color: white;
+	padding-top: 10px;
+	border-top-left-radius: 10px;
+	border-top-right-radius: 10px;
 }
 .supplied-gpx-container--small {
-	margin-top: 20px;
-	margin-bottom: 20px;
-	height: 150px;
+	margin-top: 0px;
+	margin-bottom: 10px;
+	height: 180px;
+	overflow: auto;
 }
 .supplied-gpx {
 	padding: 10px;
-	border-top: 1px solid grey;
+	border-bottom: 1px solid grey;
 }
 .supplied-gpx-stats {
 	list-style: none;
 }
 .supplied-gpx-stats li {
-	float: left;
 	border-left: 1px solid grey;
-	padding: 10px;
+	padding-left: 10px;
+	margin-left: -30px;
 }
 .supplied-gpx-stats li:last-child {
 	border-right: 1px solid grey;
@@ -50,5 +55,21 @@ body {
 
 .locname {
 	font-weight: bold;
-	margin-left: 50px;
+}
+
+#stat {
+	text-align: right;
+	margin-right: 50px;
+}
+
+#right {
+	background-color: #5B8EA6;
+}
+
+h1 {
+	padding-top: 15px;
+	padding-bottom: 35px;
+	font-style: italic;
+	font-family: sans-serif;
+	text-decoration: underline;
 }

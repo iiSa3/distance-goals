@@ -10,7 +10,7 @@ class SuppliedGPX {
 	}
 
 	readFile(selector, displaycontainer = null) {
-		
+
 		var file = jQuery(selector)[0].files[0];
 		if (!file) {
 			return;
@@ -74,14 +74,15 @@ class SuppliedGPX {
 
 	display(container) {
 		var html = "<li class='supplied-gpx'> \
-			<h2>" + this.name + "</h2> \
+			<h3>" + this.name + "</h3> \
 			<ul class='supplied-gpx-stats clearfix'> \
 				<li><strong>Distance:</strong> " + Math.round((this.distance*100)) / 100 + " kilometers</li> \
 				<li><strong>Elevation:</strong> " + Math.round(this.elevation*100)/100 + " metres</li> \
 				<li><strong>Time:</strong> " + dg.formatTime(this.time) + "</li> \
+				<li><strong>Mean Speed:</strong> " + Math.round(((((Math.round((this.distance*100)) / 100)/this.time)*60)*60)*100)/100 + " kph</li> \
 			</ul> \
 		</li>";
-
 		jQuery(container).append(html);
 	}
+
 }

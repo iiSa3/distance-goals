@@ -5,28 +5,35 @@
 	<title>Distance Goals</title>
 	<link rel="stylesheet" href="css/main.css">
 	<link rel="stylesheet" href="https://unpkg.com/leaflet@1.3.4/dist/leaflet.css" />
+	<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.2/css/bootstrap.min.css" integrity="sha384-Smlep5jCw/wG7hdkwQ/Z5nLIefveQRIY9nfy6xoR1uRYBtpZgI6339F5dgvm/e9B" crossorigin="anonymous">
 </head>
 <body class="clearfix">
-	<h1>Distance Goals</h1>
-	<div class="gpxinput">
-		<input type="file" id="gpxfile">
-		<input type="submit" id="gpxconfirm">
-		<span id="locname" class="locname"></span>
+
+	<div class="row">
+		<div class="col-lg-8">
+				<h1>Distance Goals</h1>
+			<div class="gpxinput">
+				<input type="file" class="btn btn-info" id="gpxfile"></button>
+				<button type="submit" class="btn btn-info" id="gpxconfirm">Submit GPX</button>
+				<button type="button" class="btn btn-info float-lg-right" onclick="location.reload();">Clear All</button>
+				<span id="locname" class="locname"></span>
+			</div>
+			<div id="map"></div>
+		</div>
+		<div class="col-lg-4" id="right">
+			<ul class="supplied-gpx-container" id="gpxlist">
+				<h2>Individual File Statistics</h2>
+			<hr>
+			</ul>
+			<ul class="supplied-gpx-container supplied-gpx-container--small">
+				<h2>Aggregated File Statistics</h2>
+				<hr>
+				<li><strong>Total Distance: </strong><span id="aggdist">0</span>km</li>
+				<li><strong>Total Time: </strong><span id="aggtime">0</span></li>
+				<li><strong>Total Height Gain: </strong><span id="aggele">0</span>m</li>
+			</ul>
+		</div>
 	</div>
-
-	<div id="map" style="height: 600px; width: 50%;"></div>
-
-	<ul class="supplied-gpx-container" id="gpxlist">
-		<h2>Individual File Statistics</h2>
-	</ul>
-	<br>
-	<ul class="supplied-gpx-container supplied-gpx-container--small">
-		<h2>Aggregated File Statistics</h2>
-		<li>Total Distance: <span id="aggdist">0</span>km</li>
-		<li>Total Time: <span id="aggtime">0</span></li>
-		<li>Total Height Gain: <span id="aggele">0</span>m</li>
-	</ul>
-
 
 	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
 	<script src="https://unpkg.com/leaflet@1.3.4/dist/leaflet.js"></script>
