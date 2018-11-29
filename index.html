@@ -6,31 +6,105 @@
 	<link rel="stylesheet" href="css/main.css">
 	<link rel="stylesheet" href="https://unpkg.com/leaflet@1.3.4/dist/leaflet.css" />
 	<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.2/css/bootstrap.min.css" integrity="sha384-Smlep5jCw/wG7hdkwQ/Z5nLIefveQRIY9nfy6xoR1uRYBtpZgI6339F5dgvm/e9B" crossorigin="anonymous">
+
+	<script>
+	window.onload = function () {
+
+	var chart = new CanvasJS.Chart("chartContainer", {
+		animationEnabled: true,
+		theme: "light1",
+		title:{
+			text: "Distance travelled over time."
+		},
+		axisY:{
+			includeZero: false
+		},
+		data: [{
+			type: "line",
+			dataPoints: [
+				{ y: 250 },
+				{ y: 314},
+				{ y: 320, indexLabel: "highest",markerColor: "red", markerType: "triangle" },
+				{ y: 360 },
+				{ y: 390 },
+				{ y: 400 },
+				{ y: 420 },
+				{ y: 450 },
+				{ y: 490 , indexLabel: "lowest",markerColor: "DarkSlateGrey", markerType: "cross" },
+				{ y: 500 },
+				{ y: 520 },
+				{ y: 560 }
+			]
+		}]
+	});
+	chart.render();
+
+	}
+	</script>
+
 </head>
 <body class="clearfix">
 
 	<div class="row">
 		<div class="col-lg-8">
-				<h1>Distance Goals</h1>
+			<div class="head1">&nbsp&nbsp&nbspLe Jog&nbsp&nbsp&nbsp</div>
+				<div class="mapContainer">
 			<div class="gpxinput">
-				<input type="file" class="btn btn-info" id="gpxfile"></button>
-				<button type="submit" class="btn btn-info" id="gpxconfirm">Submit GPX</button>
-				<button type="button" class="btn btn-info float-lg-right" onclick="location.reload();">Clear All</button>
-				<span id="locname" class="locname"></span>
+				<center>
+				<input type="file" class="btn btn-outline-light" style="opacity:0.8;" id="gpxfile"></button>
+				<button type="submit" class="btn btn-outline-light btn-lg" style="opacity:0.8; height:45px;" id="gpxconfirm">Submit GPX</button>
+				<button type="button" class="btn btn-outline-light btn-lg" style="opacity:0.8; height:45px;" onclick="location.reload();">Clear All</button>
+				<button type="button" class="btn btn-outline-light btn-lg" style="opacity:0.8; height:45px; display:none;" id="toggleGraph">Toggle Graph</button>
+			</center>
+			</div>
+			<div class="mapModal">
+				<div class="welcomeModalText">
+					<div class="welcomeText" id="wel">
+					<div class="row">
+						<div class="col-lg-3">
+							<img id="arrow" src="img/arrow.png">
+						</div>
+						<div class="col-lg-9">
+
+							Welcome to Le Jog.
+							<br>You can upload your GPX files here to extract running data!
+							<br>Upload your first file to get started!
+
+							<ul>
+								<li>View Your Individual Statistics!</li>
+								<li>View Your Total Statistics!</li>
+								<li>View Results in a map!</li>
+								<li>View Results as a graph!</li>
+								</ul>
+						</div>
+					</div>
+					</div>
+				</div>
 			</div>
 			<div id="map"></div>
+			<div id="chartContainer" style="height:715px;"></div>
+		<script src="https://canvasjs.com/assets/script/canvasjs.min.js"></script>
 		</div>
+	</div>
 		<div class="col-lg-4" id="right">
 			<ul class="supplied-gpx-container" id="gpxlist">
-				<h2>Individual File Statistics</h2>
+				<h2>Individual Results.</h2>
 			<hr>
+			<div class="welcomeText">
+			When you upload some GPX files you will be eable to view each files individual results here!.
+			</div>
 			</ul>
 			<ul class="supplied-gpx-container supplied-gpx-container--small">
-				<h2>Aggregated File Statistics</h2>
+				<h2>Total Results.</h2>
 				<hr>
+				<div class="welcomeText" id="lower">Your totals will appear here!</div>
+				<div class="hidden">
 				<li><strong>Total Distance: </strong><span id="aggdist">0</span>km</li>
 				<li><strong>Total Time: </strong><span id="aggtime">0</span></li>
 				<li><strong>Total Height Gain: </strong><span id="aggele">0</span>m</li>
+				<li><strong>Total Speed Average: </strong><span id="aggspeed">0</span>kph</li>
+				<br><span id="locname" class="locname"></span>
+			</div>
 			</ul>
 		</div>
 	</div>

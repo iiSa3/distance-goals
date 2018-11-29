@@ -10,7 +10,8 @@ class DistanceGoals {
 				agg: {
 					distance: '#aggdist',
 					elevation: '#aggele',
-					time: '#aggtime'
+					time: '#aggtime',
+					speed: '#aggspeed'
 				}
 			}
 		};
@@ -20,6 +21,7 @@ class DistanceGoals {
 		this.distance = 0;
 		this.elevation = 0;
 		this.time = 0;
+		this.speed = 0;
 
 		this.initialised = false;
 		this.finished = false;
@@ -33,8 +35,9 @@ class DistanceGoals {
 			dg.uploadedGPXFiles.push(gpx);
 
 			return false;
-		});
+		})
 	}
+
 
 	initMap() {
 		this.map = L.map('map').setView([51.505, -0.09], 13);
@@ -68,6 +71,13 @@ class DistanceGoals {
 		jQuery(this.settings.selectors.agg.time).text(str);
 	}
 
+	addToSpeed(distance, time) {
+		if(this.speed == 0) this.speed += distance/time;
+		else { this.speed += (distance/time); this.speed /= 2; }
+
+		jQuery(this.settings.selectors.agg.speed).text(Math.round((this.speed*60)*60*100)/100);
+	}
+
 	formatTime(time) {
 		var seconds = time % 60;
 		var mins = Math.floor(time / 60);
@@ -96,13 +106,13 @@ class DistanceGoals {
 	  var R = 6371; // Radius of the earth in km
 	  R = R*1000; //Convert to metres
 	  var dLat = this.deg2rad(lat2-lat1);  // deg2rad below
-	  var dLng = this.deg2rad(lng2-lng1); 
-	  var a = 
+	  var dLng = this.deg2rad(lng2-lng1);
+	  var a =
 	    Math.sin(dLat/2) * Math.sin(dLat/2) +
-	    Math.cos(this.deg2rad(lat1)) * Math.cos(this.deg2rad(lat2)) * 
+	    Math.cos(this.deg2rad(lat1)) * Math.cos(this.deg2rad(lat2)) *
 	    Math.sin(dLng/2) * Math.sin(dLng/2)
-	    ; 
-	  var c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1-a)); 
+	    ;
+	  var c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1-a));
 	  var d = R * c; // Distance in m
 	  return d;
 	}
@@ -215,4 +225,9 @@ class DistanceGoals {
 var dg;
 jQuery(document).ready(function() {
 	dg = new DistanceGoals();
+
+	$("#toggleGraph").click(function() {
+		$("#map").toggle();
+		$("#chartContainer").toggle();
+	})
 });
