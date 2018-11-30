@@ -27,6 +27,8 @@ class DistanceGoals {
 		this.initialised = false;
 		this.finished = false;
 
+		this.points = [];
+
 		this.initMap();
 
 		jQuery(this.settings.selectors.fileconfirm).on('click', function(event) {
@@ -243,10 +245,29 @@ class DistanceGoals {
 var dg;
 var isMph = false;
 jQuery(document).ready(function() {
+	window.onload = function () {
+	var chart = new CanvasJS.Chart("chartContainer", {
+		animationEnabled: true,
+		theme: "light2",
+		title:{
+			text: "Distance Over Time"
+		},
+		axisY:{
+			includeZero: false
+		},
+		data: [{
+			type: "line",
+			dataPoints: points
+		}]
+	});
+	chart.render();
+	}
+
 	dg = new DistanceGoals();
 	// graph = new Graph();
 	$("#kilometers").prop('disabled',true);
 	$(".hidden-t").hide();
+	$("#chartContainer").show();
 
 	$("#toggleGraph").click(function() {
 		$("#map").toggle();
@@ -288,5 +309,22 @@ jQuery(document).ready(function() {
 		$("#kilometers").prop('disabled',true);
 		$("#miles").prop('disabled',false);
 	})
+
+	$("#toggleGraph").click(function() {
+		for(i=1;i<dg.counter;i++) {
+			var speed = $("#"+i+".speed").text();
+			var split = speed.split(" ");
+			speed = split[0];
+			var distance = $("#"+i+".distance").text();
+			var splitD = distance.split(" ");
+			distance = splitD[0];
+		}
+		this.points.push({
+			x: distance,
+			y: speed
+		})
+
+	});
+
 
 });
