@@ -202,11 +202,6 @@ class DistanceGoals {
 		    routeLayer.addData(data);
 		    routeLayer.addTo(this.map).snakeIn();
 
-		    var that = this;
-		    routeLayer.on('snakeend', function () {
-			    that.map.fitBounds(routeLayer.getBounds());
-		    });
-
 		    var currentMarker = L.marker([this.currentLatLng[1], this.currentLatLng[0]]).bindPopup(sgpx.name + "<br>" + Math.round(sgpx.distance*100)/100 + "km").addTo(this.map);
 		    this.getLocation(this.currentLatLng);
 		    this.finished = (data.coordinates.length == fullLength)
@@ -264,7 +259,7 @@ jQuery(document).ready(function() {
 			var distance = $(".distance#" + i).text();
 			var split = speed.split(" ");
 			var splitD = distance.split(" ");
-			$("#"+i+".speed").html(Math.round(splitD[0]/1.609) + " mph");
+			$("#"+i+".speed").html(Math.round(split[0]/1.609) + " mph");
 			$("#"+i+".distance").html(Math.round(splitD[0]/1.609) + " miles");
 		}
 		speed = $("#aggspeed").text();
