@@ -77,7 +77,7 @@ class SuppliedGPX {
 	}
 
 	display(container) {
-		var html = "<div class='noVis'><li class='supplied-gpx'> \
+		var html = "<li class='supplied-gpx'> \
 			<h3>"+ this.id + " " + this.name + "</h3> \
 			<ul class='supplied-gpx-stats clearfix'> \
 				<li><strong>Distance:</strong><span class='distance' id=" + this.id + ">" + Math.round((this.distance*100)) / 100 + " kilometers</span></li> \
@@ -85,7 +85,7 @@ class SuppliedGPX {
 				<li><strong>Time:</strong> " + dg.formatTime(this.time) + "</li> \
 				<li><strong>Mean Speed:</strong> <span class='speed' id=" + this.id + ">" + Math.round(((((Math.round((this.distance*100)) / 100)/this.time)*60)*60)*100)/100 + " kph</span></li> \
 			</ul> \
-		</li></div>";
+		</li>";
 		jQuery(container).append(html);
 	}
 
