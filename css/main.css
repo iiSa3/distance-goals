@@ -54,7 +54,7 @@ body {
 	font-size: 0.7em;
 }
 #arrow {
-	height:250px;
+	max-height:250px;
 	margin-top:40px;
 }
 #map {
@@ -119,6 +119,8 @@ body {
 	margin-bottom: 20px;
 }
 
+
+
 .locname {
 	font-weight: bold;
 	font-size: 1.3em;
@@ -142,7 +144,7 @@ body {
 	padding-bottom: 5px;
 	font-style: italic;
 	font-weight: bolder;
-	font-family: Facon;
+	font-family: Facon, cursive, arial;
 	text-decoration: underline;
 	text-align: center;
 	font-size: 5em;
@@ -161,4 +163,8 @@ body {
 @font-face {
 	font-family: Facon;
 	src: url(../font/Facon.ttf);
+}
+
+#gpxfile:focus {
+	color: white;
 }
