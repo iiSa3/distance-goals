@@ -36,7 +36,7 @@ class DistanceGoals {
 
 			$(".welcomeText").fadeOut(1000);
 			$("#toggleGraph").fadeIn(500);
-			$("#chartContainer").hide();
+			// $("#chartContainer").hide();
 			$(".welcomeText").promise().done(function() {
 				$(".noVis").show();
 				$(".hidden-t").show();
@@ -244,30 +244,14 @@ class DistanceGoals {
 
 var dg;
 var isMph = false;
+var points = [];
+var chart;
 jQuery(document).ready(function() {
-	window.onload = function () {
-	var chart = new CanvasJS.Chart("chartContainer", {
-		animationEnabled: true,
-		theme: "light2",
-		title:{
-			text: "Distance Over Time"
-		},
-		axisY:{
-			includeZero: false
-		},
-		data: [{
-			type: "line",
-			dataPoints: points
-		}]
-	});
-	chart.render();
-	}
-
 	dg = new DistanceGoals();
 	// graph = new Graph();
 	$("#kilometers").prop('disabled',true);
 	$(".hidden-t").hide();
-	$("#chartContainer").show();
+	$("#chartContainer").hide();
 
 	$("#toggleGraph").click(function() {
 		$("#map").toggle();
@@ -311,6 +295,7 @@ jQuery(document).ready(function() {
 	})
 
 	$("#toggleGraph").click(function() {
+		points = [];
 		for(i=1;i<dg.counter;i++) {
 			var speed = $("#"+i+".speed").text();
 			var split = speed.split(" ");
@@ -318,11 +303,36 @@ jQuery(document).ready(function() {
 			var distance = $("#"+i+".distance").text();
 			var splitD = distance.split(" ");
 			distance = splitD[0];
+
+			points.push({
+				x: parseFloat(i),
+				y: parseFloat(distance)
+			});
 		}
-		this.points.push({
-			x: distance,
-			y: speed
-		})
+
+		if(chart)
+			chart.destroy();
+
+		chart = new CanvasJS.Chart("chartContainer", {
+			animationEnabled: true,
+			theme: "light2",
+			title:{
+				text: "Distance Over Time"
+			},
+			axisY:{
+				includeZero: true
+			},
+			axisX: {
+				includeZero: false,
+				min: 0,
+				stepSize: 1
+			},
+			data: [{
+				type: "line",
+				dataPoints: points
+			}]
+		});
+		chart.render();
 
 	});
 
