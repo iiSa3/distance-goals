@@ -6,42 +6,9 @@
 	<link rel="stylesheet" href="css/main.css">
 	<link rel="stylesheet" href="https://unpkg.com/leaflet@1.3.4/dist/leaflet.css" />
 	<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.2/css/bootstrap.min.css" integrity="sha384-Smlep5jCw/wG7hdkwQ/Z5nLIefveQRIY9nfy6xoR1uRYBtpZgI6339F5dgvm/e9B" crossorigin="anonymous">
-
-	<script>
-	window.onload = function () {
-
-	var chart = new CanvasJS.Chart("chartContainer", {
-		animationEnabled: true,
-		theme: "light1",
-		title:{
-			text: "Distance travelled over time."
-		},
-		axisY:{
-			includeZero: false
-		},
-		data: [{
-			type: "line",
-			dataPoints: [
-				{ y: 250 },
-				{ y: 314},
-				{ y: 320, indexLabel: "highest",markerColor: "red", markerType: "triangle" },
-				{ y: 360 },
-				{ y: 390 },
-				{ y: 400 },
-				{ y: 420 },
-				{ y: 450 },
-				{ y: 490 , indexLabel: "lowest",markerColor: "DarkSlateGrey", markerType: "cross" },
-				{ y: 500 },
-				{ y: 520 },
-				{ y: 560 }
-			]
-		}]
-	});
-	chart.render();
-
-	}
-	</script>
-
+	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
 </head>
 <body class="clearfix">
 
@@ -51,7 +18,7 @@
 				<div class="mapContainer">
 			<div class="gpxinput">
 				<center>
-				<input type="file" class="btn btn-outline-light" style="opacity:0.8;" id="gpxfile"></button>
+				<input type="file" class="btn btn-outline-light" style="opacity:0.8; display:inline;" id="gpxfile"></button>
 				<button type="submit" class="btn btn-outline-light btn-lg" style="opacity:0.8; height:45px;" id="gpxconfirm">Submit GPX</button>
 				<button type="button" class="btn btn-outline-light btn-lg" style="opacity:0.8; height:45px;" onclick="location.reload();">Clear All</button>
 				<button type="button" class="btn btn-outline-light btn-lg" style="opacity:0.8; height:45px; display:none;" id="toggleGraph">Toggle Graph</button>
@@ -88,6 +55,7 @@
 	</div>
 		<div class="col-lg-4" id="right">
 			<ul class="supplied-gpx-container" id="gpxlist">
+								<button type="button" class="btn btn-outline-basic btn-lg float-right" style="opacity:0.8; height:45px; display:inline;"data-toggle="modal" data-target="#exampleModalCenter" id="toggleSpeed">Toggle Units</button>
 				<h2>Individual Results.</h2>
 			<hr>
 			<div class="welcomeText">
@@ -98,16 +66,41 @@
 				<h2>Total Results.</h2>
 				<hr>
 				<div class="welcomeText" id="lower">Your totals will appear here!</div>
-				<div class="hidden">
-				<li><strong>Total Distance: </strong><span id="aggdist">0</span>km</li>
+			<div class="hidden-t">
+				<li><strong>Total Distance: </strong><span id="aggdist">0 kilometers</span></li>
 				<li><strong>Total Time: </strong><span id="aggtime">0</span></li>
 				<li><strong>Total Height Gain: </strong><span id="aggele">0</span>m</li>
-				<li><strong>Total Speed Average: </strong><span id="aggspeed">0</span>kph</li>
+				<li><strong>Total Speed Average: </strong><span id="aggspeed">0 kph</span></li>
 				<br><span id="locname" class="locname"></span>
 			</div>
 			</ul>
 		</div>
 	</div>
+
+	<!-- Modal -->
+	<div class="modal fade" id="exampleModalCenter" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+	  <div class="modal-dialog modal-dialog-centered" role="document">
+	    <div class="modal-content">
+	      <div class="modal-header">
+	        <h5 class="modal-title" id="exampleModalLongTitle">Settings</h5>
+	        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+	          <span aria-hidden="true">&times;</span>
+	        </button>
+	      </div>
+	      <div class="modal-body">
+					<center>
+					<button type="button" class="btn btn-outline-basic btn-lg" id="miles">Miles</button>
+					<button type="button" class="btn btn-outline-basic btn-lg" id="kilometers">Kilometers</button>
+				</center>
+	      </div>
+	      <div class="modal-footer">
+	        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+	      </div>
+	    </div>
+	  </div>
+	</div>
+
+
 
 	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
 	<script src="https://unpkg.com/leaflet@1.3.4/dist/leaflet.js"></script>
@@ -115,6 +108,7 @@
 	<script src="js/lib/gpx-parser.js"></script>
 	<script src="js/distancegoals.js"></script>
 	<script src="js/suppliedgpx.js"></script>
+	<script src="js/grah.js"></script>
 
 
 	<!-- Dumping the GeoJson here. In the real world it would be hosted so we could get the file from url without a CORS issue -->

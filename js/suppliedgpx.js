@@ -1,10 +1,11 @@
 class SuppliedGPX {
 
-	constructor(fileuploadselector, displaycontainer = null) {
+	constructor(fileuploadselector, displaycontainer = null, id) {
 		this.distance = 0;
 		this.elevation = 0;
 		this.time = 0;
 		this.name = "";
+		this.id = id;
 
 		this.readFile(fileuploadselector, displaycontainer);
 	}
@@ -30,19 +31,6 @@ class SuppliedGPX {
 				dg.addToSpeed(sgpx.distance,sgpx.time);
 
 				dg.displayGoalMap(sgpx);
-
-				$(".welcomeText").fadeOut(1000);
-				$("#toggleGraph").fadeIn(500);
-				$("#chartContainer").hide();
-				$(".welcomeText").promise().done(function() {
-					$(".noVis").show();
-					$(".hidden").fadeIn(1000);
-					$(".supplied-gpx").fadeIn(1000);
-					$(".mapModal").hide();
-					$(".mapModal").promise().done(function() {
-						$("#map").fadeIn(1000);
-					});
-				});
 
 				if(displaycontainer)
 					sgpx.display(displaycontainer);
@@ -90,12 +78,12 @@ class SuppliedGPX {
 
 	display(container) {
 		var html = "<div class='noVis'><li class='supplied-gpx'> \
-			<h3>" + this.name + "</h3> \
+			<h3>"+ this.id + " " + this.name + "</h3> \
 			<ul class='supplied-gpx-stats clearfix'> \
-				<li><strong>Distance:</strong> " + Math.round((this.distance*100)) / 100 + " kilometers</li> \
+				<li><strong>Distance:</strong><span class='distance' id=" + this.id + ">" + Math.round((this.distance*100)) / 100 + " kilometers</span></li> \
 				<li><strong>Elevation:</strong> " + Math.round(this.elevation*100)/100 + " metres</li> \
 				<li><strong>Time:</strong> " + dg.formatTime(this.time) + "</li> \
-				<li><strong>Mean Speed:</strong> " + Math.round(((((Math.round((this.distance*100)) / 100)/this.time)*60)*60)*100)/100 + " kph</li> \
+				<li><strong>Mean Speed:</strong> <span class='speed' id=" + this.id + ">" + Math.round(((((Math.round((this.distance*100)) / 100)/this.time)*60)*60)*100)/100 + " kph</span></li> \
 			</ul> \
 		</li></div>";
 		jQuery(container).append(html);

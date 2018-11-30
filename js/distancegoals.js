@@ -22,6 +22,7 @@ class DistanceGoals {
 		this.elevation = 0;
 		this.time = 0;
 		this.speed = 0;
+		this.counter = 1;
 
 		this.initialised = false;
 		this.finished = false;
@@ -31,7 +32,20 @@ class DistanceGoals {
 		jQuery(this.settings.selectors.fileconfirm).on('click', function(event) {
 			event.preventDefault();
 
-			var gpx = new SuppliedGPX(dg.settings.selectors.fileselector, dg.settings.selectors.gpxcontainer);
+			$(".welcomeText").fadeOut(1000);
+			$("#toggleGraph").fadeIn(500);
+			$("#chartContainer").hide();
+			$(".welcomeText").promise().done(function() {
+				$(".noVis").show();
+				$(".hidden-t").show();
+				$(".supplied-gpx").fadeIn(1000);
+				$(".mapModal").hide();
+				$(".mapModal").promise().done(function() {
+					$("#map").fadeIn(1000);
+				});
+			});
+
+			var gpx = new SuppliedGPX(dg.settings.selectors.fileselector, dg.settings.selectors.gpxcontainer,dg.counter++);
 			dg.uploadedGPXFiles.push(gpx);
 
 			return false;
@@ -54,7 +68,7 @@ class DistanceGoals {
 	addToDistance(amount) {
 		this.distance += amount;
 
-		jQuery(this.settings.selectors.agg.distance).text(Math.round((this.distance*100)) / 100);
+		jQuery(this.settings.selectors.agg.distance).text(Math.round((this.distance*100)) / 100 + " kilometers");
 	}
 
 	addToElevation(amount) {
@@ -75,7 +89,7 @@ class DistanceGoals {
 		if(this.speed == 0) this.speed += distance/time;
 		else { this.speed += (distance/time); this.speed /= 2; }
 
-		jQuery(this.settings.selectors.agg.speed).text(Math.round((this.speed*60)*60*100)/100);
+		jQuery(this.settings.selectors.agg.speed).text(Math.round((this.speed*60)*60*100)/100 + " kph");
 	}
 
 	formatTime(time) {
@@ -223,11 +237,52 @@ class DistanceGoals {
 }
 
 var dg;
+var isMph = false;
 jQuery(document).ready(function() {
 	dg = new DistanceGoals();
+	// graph = new Graph();
+	$("#kilometers").prop('disabled',true);
+	$(".hidden-t").hide();
 
 	$("#toggleGraph").click(function() {
 		$("#map").toggle();
 		$("#chartContainer").toggle();
 	})
+
+	$("#miles").click(function() {
+		for(i=1;i<dg.counter;i++) {
+			var speed = $(".speed#" + i).text();
+			var distance = $(".distance#" + i).text();
+			var split = speed.split(" ");
+			var splitD = distance.split(" ");
+			$("#"+i+".speed").html(Math.round(splitD[0]/1.609) + " mph");
+			$("#"+i+".distance").html(Math.round(splitD[0]/1.609) + " miles");
+		}
+		speed = $("#aggspeed").text();
+		split = speed.split(" ");
+		$("#aggspeed").html(Math.round(split[0]/1.609) + " mph");
+		$("#aggdist").html(Math.round(split[0]/1.609) + " miles");
+		$("#miles").prop('disabled',true);
+		$("#kilometers").prop('disabled',false);
+	})
+
+	$("#kilometers").click(function() {
+		for(i=1;i<dg.counter;i++) {
+			var speed = $("#"+i+".speed").text();
+			var distance = $(".distance#"+ i).text();
+			var splitD = distance.split(" ");
+			var split = speed.split(" ");
+			$("#"+i+".speed").html(Math.round(split[0]) + " kph");
+			$("#"+i+".distance").html(Math.round(splitD[0]*1.609) + " kilometers");
+		}
+		speed = $("#aggspeed").text();
+		var distance = $("#aggdist").text();
+		split = speed.split(" ");
+		var splitD = distance.split(" ");
+		$("#aggspeed").html(Math.round(split[0]*1.609) + " kph");
+		$("#aggdist").html(Math.round(splitD[0]*1.609) + " kilometers");
+		$("#kilometers").prop('disabled',true);
+		$("#miles").prop('disabled',false);
+	})
+
 });
