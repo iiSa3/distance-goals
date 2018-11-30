@@ -48,16 +48,16 @@ class SuppliedGPX {
 		var totalElevation = 0;
 		var totalSpeed = 0;
 
-		var times = parser.xmlSource.getElementsByTagName('time');
-		var start = Date.parse(times[0].innerHTML);
-		var end = Date.parse(times[times.length - 1].innerHTML);
-
 		if(parser.tracks != null && parser.tracks.length > 0) {
 			for (var i = parser.tracks.length - 1; i >= 0; i--) {
 				totalDistance += (parser.tracks[i].distance.total/1000);
 				totalElevation += parser.tracks[i].elevation.pos;
 				totalSpeed += Math.round(((((Math.round((totalDistance*100)) / 100)/this.time)*60)*60)*100)/100
 			}
+
+			var times = parser.xmlSource.getElementsByTagName('time');
+			var start = Date.parse(times[0].innerHTML);
+			var end = Date.parse(times[times.length - 1].innerHTML);
 		} else {
 			alert("Unable to find any tracks in this file. Are you sure it is a GPX file?");
 			return false;
