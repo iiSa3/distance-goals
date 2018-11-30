@@ -6,6 +6,7 @@ body {
 	padding-left: 40px;
 	padding-right: 40px;
 	background: url("../img/background.jpg");
+	background-size: cover;
 }
 .clearfix::after {
     content: "";
@@ -63,8 +64,11 @@ body {
 	margin-left: auto;
 	margin-right: auto;
 	border-radius: 25px;
-	z-index: 10;
-	display: none;
+	z-index: -1;
+	opacity: 0;
+
+	position: fixed;
+	top: 0;
 }
 @media screen and (max-width: 1800px) {
 	#map {
@@ -166,6 +170,6 @@ body {
 	src: url(../font/Facon.ttf);
 }
 
-#gpxfile:focus {
+#btn-outline-light:focus {
 	color: white;
 }

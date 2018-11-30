@@ -41,7 +41,11 @@ class DistanceGoals {
 				$(".supplied-gpx").fadeIn(1000);
 				$(".mapModal").hide();
 				$(".mapModal").promise().done(function() {
-					$("#map").fadeIn(1000);
+					$("#map").css('position', 'relative');
+					$("#map").css('top', 'auto');
+					$("#map").css('z-index', '10');
+					$("#map").animate({opacity: 1}, 1000);
+
 				});
 			});
 
