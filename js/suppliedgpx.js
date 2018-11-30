@@ -59,6 +59,7 @@ class SuppliedGPX {
 			var start = Date.parse(times[0].innerHTML);
 			var end = Date.parse(times[times.length - 1].innerHTML);
 		} else {
+			dg.counter--;
 			alert("Unable to find any tracks in this file. Are you sure it is a GPX file?");
 			return false;
 		}
@@ -87,6 +88,10 @@ class SuppliedGPX {
 			</ul> \
 		</li>";
 		jQuery(container).append(html);
+
+		
+		$("#toggleGraph").trigger('click');
+		$("#toggleGraph").trigger('click');
 	}
 
 }

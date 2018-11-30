@@ -317,7 +317,7 @@ jQuery(document).ready(function() {
 			animationEnabled: true,
 			theme: "light2",
 			title:{
-				text: "Distance Over Time"
+				text: "Distance for each Activity"
 			},
 			axisY:{
 				includeZero: true
@@ -325,7 +325,8 @@ jQuery(document).ready(function() {
 			axisX: {
 				includeZero: false,
 				min: 0,
-				stepSize: 1
+				stepSize: 1,
+				max: dg.counter
 			},
 			data: [{
 				type: "line",
